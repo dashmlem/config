@@ -13,12 +13,11 @@ class ShellEmulator:
         self.current_path = "/"
         self.actions = []
 
-        # Загрузка виртуальной файловой системы
         self.load_virtual_filesystem()
 
     def load_virtual_filesystem(self):
         with zipfile.ZipFile(self.zip_path, 'r') as zip_ref:
-            zip_ref.extractall('/tmp/vfs')  # Извлекаем во временную директорию
+            zip_ref.extractall('/tmp/vfs')
         print(f"Виртуальная файловая система загружена из {self.zip_path}")
 
     def log_action(self, action):
@@ -50,15 +49,19 @@ class ShellEmulator:
                 print("Директория не найдена.")
 
     def uniq(self, filename):
+        filepath = os.path.join('/tmp/vfs', self.current_path.lstrip('/'), filename) # Corrected path joining
         try:
-            with open(os.path.join(self.current_path, filename), 'r') as f:
+            with open(filepath, 'r', encoding='utf-8') as f:
                 lines = f.readlines()
-                unique_lines = list(dict.fromkeys(line.strip() for line in lines))
-                print("Unique Lines:", unique_lines)  # Для отладки
+                unique_lines = list(set(line.strip() for line in lines)) # More efficient using set
+                print("Unique Lines:")
                 for line in unique_lines:
                     print(line)
+                self.log_action(f"uniq {filename}") # Log the action
         except FileNotFoundError:
-            print("Файл не найден.")
+            print(f"Error: File '{filename}' not found.")
+        except Exception as e:
+            print(f"An error occurred during uniq: {e}")
 
     def tree(self, path=''):
         full_path = os.path.join('/tmp/vfs', self.current_path.lstrip('/'), path)
