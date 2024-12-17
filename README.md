@@ -125,11 +125,4 @@ cal
 
 (при условии, что поинтер текущей директории находится в папке проекта, иначе - нужно прописать путь до файла emulator_test.py)
 
-## Результат прогона тестов
-![image](https://github.com/user-attachments/assets/2af34e25-0662-40f3-916f-172da4046fe0)
-
-## Работа с эмулятором
-![image](https://github.com/user-attachments/assets/594dbd64-2b47-4e13-9495-5c4e07150631)
-
-
 
